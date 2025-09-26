@@ -2,7 +2,7 @@ import streamlit as st
 import hashlib
 import json
 import time
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import qrcode
 from io import BytesIO
 
@@ -10,7 +10,7 @@ from io import BytesIO
 # Blockchain Class
 # -----------------------
 class Blockchain:
-    def _init_(self):
+    def __init__(self):
         self.chain: List[Dict[str, Any]] = []
         self.pending_transactions: List[Dict[str, Any]] = []
         # Genesis block
@@ -61,7 +61,7 @@ class Blockchain:
                 return False
         return True
 
-    def verify_ticket(self, ticket_id: str) -> Dict[str, Any] | None:
+    def verify_ticket(self, ticket_id: str) -> Optional[Dict[str, Any]]:
         for block in self.chain:
             for tx in block["transactions"]:
                 if tx["ticket_id"] == ticket_id:
@@ -128,3 +128,4 @@ for block in reversed(bc.chain):
         st.write("Previous Hash:", block.get("previous_hash", "N/A"))
         st.write("Hash:", block.get("hash", "N/A"))
         st.json(block.get("transactions", []))
+
